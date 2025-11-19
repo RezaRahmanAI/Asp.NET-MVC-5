@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <h1>Data passing from View to Controller</h1>
+
+    <form method="post">
+        <label>Name:</label><br />
+        <input type="text" name="name" /><br /><br />
+        <label>Age:</label><br />
+        <input type="number" name="age" /><br /><br />
+
+        <button type="submit" formaction="Home/SaveWithParms">Submit using Parameter</button>        
+        
+        <button type="submit" formaction="Home/SaveWithReq">Submin using Request</button>
+    </form>
+</main>
