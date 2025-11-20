@@ -53,6 +53,7 @@ namespace SMSLite.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
+            ViewBag.Title = "Create Student";
             return View();
         }
 
@@ -67,6 +68,7 @@ namespace SMSLite.Controllers
             {
                 db.Students.Add(student);
                 db.SaveChanges();
+                TempData["Message"] = "Student created successfully!";
                 return RedirectToAction("Index");
             }
 

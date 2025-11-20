@@ -1,78 +1,127 @@
 ﻿@model IEnumerable<SMSLite.Models.Student>
 
+@{
+    ViewBag.Title = "Students";
+    var searchName = Request["searchName"];
+    var searchDept = Request["searchDept"];
+}
 
-
-<h2>@ViewBag.Title</h2>
-
-
-@using (Html.BeginForm("Index", "Students", FormMethod.Get))
+@if (TempData["Message"] != null)
 {
-    <div class="">
-        <label>Name: </label>
-        @Html.TextBox("searchName", Request["searchName"], new { @class = "form-control", @style = "margin-right:5px" })
-
-        <label>Department: </label>
-        @Html.TextBox("searchDept", Request["searchDept"], new { @class = "form-control", @style = "margin-right:5px" })
-
-        <input type="submit" value="Search" class="btn btn-primary" />
-        @Html.ActionLink("Reset", "Index", "Students", new { @class = "btn btn-secondary", @style = "margin-left:5px" })
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Department)
-        </th>
-        <th></th>
-    </tr>
+    @Html.ActionLink(
+        "Create New",
+        "Create",
+        null,
+        new { @class = "btn btn-primary" }
+    )
+</div>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+<div class="card mb-3">
+    <div class="card-body">
+        @using (Html.BeginForm("Index", "Students", FormMethod.Get, new { @class = "row g-2 align-items-end" }))
+        {
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("searchName", "Name")
+                    @Html.TextBox("searchName", searchName, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Search by name"
+                    })
+                </div>
+            </div>
 
-</table>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("searchDept", "Department")
+                    @Html.TextBox("searchDept", searchDept, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Search by department"
+                    })
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex">
+                <button type="submit" class="btn btn-primary me-2">
+                    Search
+                </button>
+
+                @Html.ActionLink(
+                    "Reset",
+                    "Index",
+                    "Students",
+                    null,
+                    new { @class = "btn btn-outline-secondary" }
+                )
+            </div>
+        }
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No students found.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.First().Name)</th>
+                <th>@Html.DisplayNameFor(m => m.First().DateOfBirth)</th>
+                <th>@Html.DisplayNameFor(m => m.First().Email)</th>
+                <th>@Html.DisplayNameFor(m => m.First().PhoneNumber)</th>
+                <th>@Html.DisplayNameFor(m => m.First().Address)</th>
+                <th>@Html.DisplayNameFor(m => m.First().Department)</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(_ => item.Name)</td>
+                    <td>
+                        @item.DateOfBirth.ToString("dd MMM yyyy")
+                    </td>
+                    <td>@Html.DisplayFor(_ => item.Email)</td>
+                    <td>@Html.DisplayFor(_ => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(_ => item.Address)</td>
+                    <td>@Html.DisplayFor(_ => item.Department)</td>
+                    <td class="text-end">
+                        @Html.ActionLink(
+                            "Edit",
+                            "Edit",
+                            new { id = item.Id },
+                            new { @class = "btn btn-sm btn-warning me-1" }
+                        )
+                        @Html.ActionLink(
+                            "Details",
+                            "Details",
+                            new { id = item.Id },
+                            new { @class = "btn btn-sm btn-info me-1" }
+                        )
+                        @Html.ActionLink(
+                            "Delete",
+                            "Delete",
+                            new { id = item.Id },
+                            new { @class = "btn btn-sm btn-danger" }
+                        )
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
