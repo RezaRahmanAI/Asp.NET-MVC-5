@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SMSLite.Data;
+using SMSLite.Models;
+using SMSLite.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,8 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using SMSLite.Data;
-using SMSLite.Models;
 
 namespace SMSLite.Controllers
 {
@@ -15,7 +16,34 @@ namespace SMSLite.Controllers
     {
         private AppDbContext db = new AppDbContext();
 
+
+        public ActionResult Dashboard()
+        {
+            ViewBag.Title = "Student Dashboard";
+            var totalStudents = db.Students.Count();
+            //var totalDept = db.Students.Select(s => s.Department).Distinct().Count();
+
+            var perDept = db.Students
+                .GroupBy(d => d.Department)
+                .Select(g => new StudentPerDept
+                {
+                    Department = g.Key,
+                    StudentCount = g.Count()
+                }).ToList();
+
+            var model = new StudentDashboardViewModel
+            {
+                TotalStudents = totalStudents,
+                StudentCountsPerDept = perDept
+            };
+
+            return View(model);
+        }
+
+
+
         // GET: Students
+
         public ActionResult Index(string searchName, string searchDept)
         {
             ViewBag.Title = "Student List";
@@ -131,6 +159,8 @@ namespace SMSLite.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        
 
         protected override void Dispose(bool disposing)
         {

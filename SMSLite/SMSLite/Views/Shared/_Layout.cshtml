@@ -6,30 +6,69 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .side-navbar {
+            min-height: 100vh; /* full screen height */
+            width: 220px; /* sidebar width */
+        }
+
+            .side-navbar .nav-link {
+                color: #fff;
+            }
+
+                .side-navbar .nav-link:hover,
+                .side-navbar .nav-link:focus {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Students", "Index", "Students", new { area = "" }, new { @class = "nav-link" })</li>
-                    @*<li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                </ul>
+    <div class="d-flex">
+        <!-- LEFT-side vertical navbar -->
+        <nav class="navbar navbar-dark bg-dark flex-column align-items-start justify-content-start side-navbar px-3">
+            @Html.ActionLink(
+                "Application name",
+                "Dashboard",
+                "Students",
+                new { area = "" },
+                new { @class = "navbar-brand mb-4" }
+            )
+
+            <ul class="navbar-nav flex-column w-100">
+
+                <li class="nav-item mb-2">
+                    @Html.ActionLink(
+                        "Dashboard",
+                        "Dashboard",
+                        "Students",
+                        new { area = "" },
+                        new { @class = "nav-link" }
+                    )
+                </li>
+                <li class="nav-item mb-2">
+                    @Html.ActionLink(
+                        "Student",
+                        "Index",
+                        "Students",
+                        new { area = "" },
+                        new { @class = "nav-link" }
+                    )
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Main content on the right -->
+        <div class="flex-grow-1">
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                </footer>
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

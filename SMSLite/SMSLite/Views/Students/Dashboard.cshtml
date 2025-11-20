@@ -1,0 +1,103 @@
+﻿@model SMSLite.Models.ViewModels.StudentDashboardViewModel
+
+@{
+    ViewBag.Title = "Student Dashboard";
+}
+
+<h2 class="mb-4">@ViewBag.Title</h2>
+
+<!-- Summary cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-2">Total Students</h5>
+                <p class="display-6 mb-0">@Model.TotalStudents</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-2">Total Departments</h5>
+                <p class="display-6 mb-0">@Model.TotalDepartments</p>
+            </div>
+        </div>
+    </div>
+
+    @* room for more summary cards later *@
+</div>
+
+<!-- Detail cards -->
+<div class="row g-3">
+    <!-- Students per department -->
+    <div class="col-lg-9">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Students per Department</h4>
+
+                @if (Model.StudentCountsPerDept == null || !Model.StudentCountsPerDept.Any())
+                {
+                    <div class="alert alert-info mb-0">
+                        No department data available.
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-striped table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th class="text-end">Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StudentCountsPerDept)
+                            {
+                                <tr>
+                                    <td>@item.Department</td>
+                                    <td class="text-end">@item.StudentCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Department list -->
+    <div class="col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Departments</h4>
+
+                @if (Model.DepartmentNames == null || !Model.DepartmentNames.Any())
+                {
+                    <div class="alert alert-info mb-0">
+                        No departments available.
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-striped table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var deptName in Model.DepartmentNames)
+                            {
+                                <tr>
+                                    <td>@deptName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

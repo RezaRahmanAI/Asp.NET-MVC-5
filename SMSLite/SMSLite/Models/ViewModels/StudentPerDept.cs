@@ -11,9 +11,25 @@ namespace SMSLite.Models.ViewModels
         public int StudentCount { get; set; }
     }
 
+
     public class StudentDashboardViewModel
     {
         public int TotalStudents { get; set; }
+        public int TotalDepartments
+        {
+            get
+            {
+                return StudentCountsPerDept?.Count ?? 0;
+            }
+        }
+        
         public List<StudentPerDept> StudentCountsPerDept { get; set; }
+        public List<string> DepartmentNames
+        {
+            get
+            {
+                return StudentCountsPerDept?.Select(d => d.Department).ToList() ?? new List<string>();
+            }
+        }
     }
 }
