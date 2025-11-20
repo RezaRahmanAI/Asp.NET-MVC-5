@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SMSLite.Data;
+using SMSLite.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,23 +10,29 @@ namespace SMSLite.Controllers
 {
     public class HomeController : Controller
     {
+        private AppDbContext db = new AppDbContext();
+
         public ActionResult Index()
         {
-            return View();
+            var totalStudents = db.Students.Count();
+
+            var perDept = db.Students
+                .GroupBy(d => d.Department)
+                .Select(g => new StudentPerDept
+                {
+                    Department = g.Key,
+                    StudentCount = g.Count()
+                }).ToList();
+
+            var model = new StudentDashboardViewModel
+            {
+                TotalStudents = totalStudents,
+                StudentCountsPerDept = perDept
+            };
+
+            return View(model);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+        
     }
 }
