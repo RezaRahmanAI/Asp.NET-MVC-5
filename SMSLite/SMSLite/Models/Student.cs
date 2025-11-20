@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMSLite.Models.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,5 +29,13 @@ namespace SMSLite.Models
 
         [Required, StringLength(100)]
         public string Department { get; set; }
+
+        // Navigation property
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
+
+        public Student()
+        {
+            Enrollments = new HashSet<Enrollment>();
+        }
     }
 }
