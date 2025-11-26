@@ -16,8 +16,17 @@ namespace SMSLite.Controllers
         private AppDbContext db = new AppDbContext();
 
         // GET: Courses
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
+            var courses = db.Courses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                courses = courses.Where(
+                    c => c.Name.Contains(search) || c.Code.Contains(search) || c.Semester.Contains(search) || c.Credit.ToString().Contains(search)
+                    );
+            }
+
             return View(db.Courses.ToList());
         }
 
@@ -53,6 +62,7 @@ namespace SMSLite.Controllers
             {
                 db.Courses.Add(course);
                 db.SaveChanges();
+                TempData["Message"] = "Course created successfully!";
                 return RedirectToAction("Index");
             }
 
@@ -114,6 +124,13 @@ namespace SMSLite.Controllers
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Students(int id)
+        {
+            var students = db.Courses.Include(c => c.Enrollments.Select(e => e.Student)).SingleOrDefault(c => c.Id == id);
+
+            return View(students);
         }
 
         protected override void Dispose(bool disposing)

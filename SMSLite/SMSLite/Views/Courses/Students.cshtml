@@ -1,0 +1,34 @@
+﻿
+@model SMSLite.Models.Domain.Course
+
+@{
+    ViewBag.Title = "Students in " + Model.Code + " - " + Model.Name;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+{
+    <p> No Students are enrolled in this Course yes.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Student Name</th>
+            <th>Email</th>
+            <th>Department</th>
+        </tr>
+        @foreach (var e in Model.Enrollments)
+        {
+            <tr>
+                <td>@e.Student.Name</td>
+                <td>@e.Student.Email</td>
+                <td>@e.Student.Department</td>
+            </tr>
+        }
+    </table>
+}
+
+
+

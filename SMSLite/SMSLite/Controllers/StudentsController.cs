@@ -165,8 +165,6 @@ namespace SMSLite.Controllers
         {
             var student = db.Students.Include(s => s.Enrollments).SingleOrDefault(s => s.Id == id);
 
-            
-
             return View(student);
         }
 
