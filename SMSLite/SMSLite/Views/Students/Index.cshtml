@@ -102,6 +102,13 @@ else
                     <td>@Html.DisplayFor(_ => item.Department)</td>
                     <td class="text-end">
                         @Html.ActionLink(
+                            "Course",
+                            "Course",
+                            "Students",
+                            new { id = item.Id },
+                            new { @class = "btn btn-sm btn-primary" }
+                            )
+                        @Html.ActionLink(
                             "Edit",
                             "Edit",
                             new { id = item.Id },

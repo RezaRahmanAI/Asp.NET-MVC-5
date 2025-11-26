@@ -1,0 +1,34 @@
+﻿
+@model SMSLite.Models.Student
+
+@{
+    ViewBag.Title = "Course";
+}
+
+<h2>Course of @Model.Name</h2>
+
+@if (Model.Enrollments == null || !Model.Enrollments.Any())
+            {
+                <p> This student in not enrolled in any courses.</p>
+            }
+else
+            {
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Credits</th>
+                        <th>Sem</th>
+                    </tr>
+                    @foreach(var e in Model.Enrollments)
+                {
+                    <tr>
+                        <td>@e.Course.Code</td>
+                        <td>@e.Course.Name</td>
+                        <td>@e.Course.Credit</td>
+                        <td>@e.Course.Semester</td>
+                    </tr>
+                }
+                </table>
+            }
+

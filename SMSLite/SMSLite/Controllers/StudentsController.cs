@@ -160,6 +160,16 @@ namespace SMSLite.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public ActionResult Course (int id)
+        {
+            var student = db.Students.Include(s => s.Enrollments).SingleOrDefault(s => s.Id == id);
+
+            
+
+            return View(student);
+        }
+
         
 
         protected override void Dispose(bool disposing)
