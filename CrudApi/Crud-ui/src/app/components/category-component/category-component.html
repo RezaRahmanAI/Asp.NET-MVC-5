@@ -1,0 +1,52 @@
+<h2>Category Management</h2>
+
+<div>
+  <input
+    type="text"
+    placeholder="Category name"
+    [(ngModel)]="category.name"
+  />
+
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="category.isActive"
+    />
+    Active
+  </label>
+
+  <button (click)="save()">
+    {{ category.id === 0 ? 'Add' : 'Update' }}
+  </button>
+
+  <button *ngIf="category.id !== 0" (click)="reset()">
+    Cancel
+  </button>
+</div>
+
+<hr />
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let c of categories">
+      <td>{{ c.name }}</td>
+      <td>
+        <span [style.color]="c.isActive ? 'green' : 'red'">
+          {{ c.isActive ? 'Active' : 'Inactive' }}
+        </span>
+      </td>
+      <td>
+        <button (click)="edit(c)">Edit</button>
+        <button (click)="delete(c.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
