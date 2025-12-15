@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../models/category.model';
@@ -19,7 +19,10 @@ export class CategoryComponent implements OnInit {
     isActive: true,
   };
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private cdr: ChangeDetectorRef // 🔥
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -28,6 +31,7 @@ export class CategoryComponent implements OnInit {
   loadCategories() {
     this.categoryService.getAll().subscribe((res) => {
       this.categories = res;
+      this.cdr.detectChanges(); // 🔥 force UI update
     });
   }
 
